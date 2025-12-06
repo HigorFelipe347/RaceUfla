@@ -1,0 +1,19 @@
+﻿@model List<CorridaUfla2.Models.Corrida>
+<h2>Corridas Disponíveis</h2>
+<form method="get" class="d-flex mb-3"><input name="busca" class="form-control" placeholder="Buscar..." /><button class="btn btn-primary">Buscar</button></form>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card p-3">
+                @if (item.CaminhoImagemMapa != null)
+                {
+                    <img src="~/imagens/@item.CaminhoImagemMapa" style="height:150px; object-fit:cover" />
+                }
+                <h4>@item.Nome</h4>
+                <p>@item.DataInicio.ToShortDateString()</p>
+                <a asp-action="Detalhes" asp-route-id="@item.Id" class="btn btn-primary">Ver Detalhes</a>
+            </div>
+        </div>
+    }
+</div>

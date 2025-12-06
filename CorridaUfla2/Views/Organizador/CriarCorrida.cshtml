@@ -1,0 +1,51 @@
+﻿@model CorridaUfla2.Models.Corrida
+@{
+    var meusKits = ViewBag.MeusKits as List<CorridaUfla2.Models.Kit>;
+}
+
+<div class="container mt-4">
+    <h2>Nova Corrida</h2>
+    <form asp-action="CriarCorrida" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6 mb-2"><label>Nome</label><input asp-for="Nome" class="form-control" required /></div>
+            <div class="col-md-3 mb-2"><label>Data</label><input asp-for="DataInicio" class="form-control" required /></div>
+            <div class="col-md-3 mb-2"><label>Hora</label><input asp-for="HorarioLargada" class="form-control" type="time" required /></div>
+
+            <div class="col-md-12 mb-2"><label>Descrição</label><textarea asp-for="Descricao" class="form-control"></textarea></div>
+
+            <h5 class="mt-3">Endereço</h5>
+            <div class="col-md-6 mb-2"><label>Cidade</label><input asp-for="Cidade" class="form-control" required /></div>
+            <div class="col-md-6 mb-2"><label>Bairro</label><input asp-for="Bairro" class="form-control" /></div>
+            <div class="col-md-9 mb-2"><label>Logradouro</label><input asp-for="Logradouro" class="form-control" /></div>
+            <div class="col-md-3 mb-2"><label>Número</label><input asp-for="Numero" class="form-control" /></div>
+
+            <div class="col-md-4 mb-2"><label>Distância (Km)</label><input asp-for="DistanciaKm" class="form-control" /></div>
+            <div class="col-md-4 mb-2"><label>Máx Pessoas</label><input asp-for="MaximoParticipantes" class="form-control" /></div>
+            <div class="col-md-4 mb-2"><label>Mapa</label><input asp-for="ArquivoImagem" type="file" class="form-control" /></div>
+        </div>
+
+        <h4 class="mt-4">Selecione os Kits desta corrida:</h4>
+        @if (meusKits != null && meusKits.Count > 0)
+        {
+            <div class="row">
+                @foreach (var k in meusKits)
+                {
+                    <div class="col-md-3">
+                        <div class="card p-2">
+                            <div class="form-check">
+                                <input type="checkbox" name="KitsSelecionados" value="@k.Id" class="form-check-input" id="k@k.Id" />
+                                <label class="form-check-label" for="k@k.Id">@k.Nome (R$ @k.Preco)</label>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning">Você não tem kits cadastrados.</div>
+        }
+
+        <button class="btn btn-success mt-3 w-100">Publicar Corrida</button>
+    </form>
+</div>

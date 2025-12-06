@@ -1,0 +1,73 @@
+﻿@model CorridaUfla2.Models.Corrida
+@{
+    var meusKits = ViewBag.MeusKits as List<CorridaUfla2.Models.Kit>;
+}
+
+<div class="container mt-4">
+    <h2>Editar Corrida</h2>
+
+    <form asp-action="EditarCorrida" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Nome do Evento</label>
+                <input asp-for="Nome" class="form-control" required />
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Data</label>
+                <input asp-for="DataInicio" class="form-control" />
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Hora</label>
+                <input asp-for="HorarioLargada" class="form-control" type="time" />
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label class="form-label">Descrição</label>
+                <textarea asp-for="Descricao" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="col-md-6 mb-2"><label>Cidade</label><input asp-for="Cidade" class="form-control" /></div>
+            <div class="col-md-6 mb-2"><label>Bairro</label><input asp-for="Bairro" class="form-control" /></div>
+            <div class="col-md-9 mb-2"><label>Logradouro</label><input asp-for="Logradouro" class="form-control" /></div>
+            <div class="col-md-3 mb-2"><label>Número</label><input asp-for="Numero" class="form-control" /></div>
+
+            <div class="col-md-4 mb-2"><label>Distância (Km)</label><input asp-for="DistanciaKm" class="form-control" /></div>
+            <div class="col-md-4 mb-2"><label>Máx Pessoas</label><input asp-for="MaximoParticipantes" class="form-control" /></div>
+
+            <div class="col-md-12 mb-3 mt-3">
+                <label class="form-label">Alterar Mapa (Deixe vazio para manter o atual)</label>
+                <input asp-for="ArquivoImagem" type="file" class="form-control" />
+            </div>
+        </div>
+
+        <hr />
+
+        <h4 class="text-primary">Kits Disponíveis</h4>
+        <div class="row mb-3">
+            @if (meusKits != null)
+            {
+                foreach (var k in meusKits)
+                {
+                    /* Verifica se o kit já estava selecionado antes */
+                    bool selecionado = Model.KitsSelecionados != null && Model.KitsSelecionados.Contains(k.Id);
+
+                    <div class="col-md-3">
+                        <div class="card p-2 @(selecionado ? "border-primary bg-light" : "")">
+                            <div class="form-check">
+                                <input type="checkbox" name="KitsSelecionados" value="@k.Id" class="form-check-input" @(selecionado ? "checked" : "") />
+                                <label>@k.Nome (R$ @k.Preco)</label>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+
+        <button class="btn btn-primary w-100">Salvar Alterações</button>
+        <a asp-action="MinhasCorridas" class="btn btn-secondary mt-2 w-100">Cancelar</a>
+    </form>
+</div>

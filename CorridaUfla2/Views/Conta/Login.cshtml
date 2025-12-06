@@ -1,0 +1,13 @@
+﻿<h2>Login</h2>
+@if (ViewBag.Erro != null)
+{
+    <div class="alert alert-danger">@ViewBag.Erro</div>
+}
+<form asp-action="Login" method="post">
+    <input name="email" class="form-control mb-2" placeholder="Email" required />
+    <input name="senha" type="password" class="form-control mb-2" placeholder="Senha" required />
+    <button class="btn btn-primary">Entrar</button>
+</form>
+<hr>
+<a asp-action="CadastroCorredor" class="btn btn-outline-success">Sou Corredor</a>
+<a asp-action="CadastroOrganizador" class="btn btn-outline-info">Sou Organizador</a>
