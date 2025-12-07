@@ -17,7 +17,7 @@
 
             <div class="col-md-3 mb-3">
                 <label class="form-label">Data</label>
-                <input asp-for="DataInicio" class="form-control" />
+                <input asp-for="DataInicio" class="form-control" type="date" />
             </div>
 
             <div class="col-md-3 mb-3">
@@ -26,7 +26,7 @@
             </div>
 
             <div class="col-md-12 mb-3">
-                <label class="form-label">Descrição</label>
+                <label>Descrição</label>
                 <textarea asp-for="Descricao" class="form-control" rows="3"></textarea>
             </div>
 
@@ -39,26 +39,31 @@
             <div class="col-md-4 mb-2"><label>Máx Pessoas</label><input asp-for="MaximoParticipantes" class="form-control" /></div>
 
             <div class="col-md-12 mb-3 mt-3">
-                <label class="form-label">Alterar Mapa (Deixe vazio para manter o atual)</label>
-                <input asp-for="ArquivoImagem" type="file" class="form-control" />
+                <label class="form-label">Alterar Mapa (opcional)</label>
+                <input asp-for="ArquivoImagem" class="form-control" type="file" />
             </div>
         </div>
 
         <hr />
 
         <h4 class="text-primary">Kits Disponíveis</h4>
+
         <div class="row mb-3">
             @if (meusKits != null)
             {
                 foreach (var k in meusKits)
                 {
-                    /* Verifica se o kit já estava selecionado antes */
-                    bool selecionado = Model.KitsSelecionados != null && Model.KitsSelecionados.Contains(k.Id);
+                    bool selecionado = Model.KitsSelecionados != null &&
+                    Model.KitsSelecionados.Contains(k.Id);
 
-                    <div class="col-md-3">
+                    <div class="col-md-3 mb-2">
                         <div class="card p-2 @(selecionado ? "border-primary bg-light" : "")">
                             <div class="form-check">
-                                <input type="checkbox" name="KitsSelecionados" value="@k.Id" class="form-check-input" @(selecionado ? "checked" : "") />
+                                <input type="checkbox" name="KitsSelecionados"
+                                       value="@k.Id"
+                                       class="form-check-input"
+                                       @(selecionado ? "checked" : "") />
+
                                 <label>@k.Nome (R$ @k.Preco)</label>
                             </div>
                         </div>

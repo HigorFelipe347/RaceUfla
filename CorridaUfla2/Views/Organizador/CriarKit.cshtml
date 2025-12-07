@@ -5,57 +5,62 @@
         <div class="card-header bg-primary text-white">
             <h3>Cadastrar Novo Kit</h3>
         </div>
+
         <div class="card-body">
+
             <form asp-action="CriarKit" method="post">
+                <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
                 <div class="row">
                     <div class="col-md-8 mb-3">
-                        <label class="fw-bold">Nome do Kit</label>
-                        <input asp-for="Nome" class="form-control" placeholder="Ex: Kit Premium" required />
+                        <label asp-for="Nome" class="fw-bold"></label>
+                        <input asp-for="Nome" class="form-control" required />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
                     </div>
+
                     <div class="col-md-4 mb-3">
-                        <label class="fw-bold">Preço (R$)</label>
+                        <label asp-for="Preco" class="fw-bold"></label>
                         <input asp-for="Preco" class="form-control" type="number" step="0.01" required />
+                        <span asp-validation-for="Preco" class="text-danger"></span>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="fw-bold">Descrição</label>
-                    <textarea asp-for="Descricao" class="form-control" rows="2" placeholder="Descreva os benefícios desse kit..." required></textarea>
+                    <label asp-for="Descricao" class="fw-bold"></label>
+                    <textarea asp-for="Descricao" class="form-control" rows="2"></textarea>
+                    <span asp-validation-for="Descricao" class="text-danger"></span>
                 </div>
 
                 <div class="mb-3 p-3 bg-light border rounded">
-                    <label class="fw-bold mb-2">Selecione os Itens Inclusos:</label>
+                    <label class="fw-bold mb-2">Selecione os itens inclusos:</label>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="itensSelecionados" value="Camiseta" id="itemCamisa">
-                        <label class="form-check-label" for="itemCamisa">Camiseta (Ativa seleção de tamanho P/M/G)</label>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="itensSelecionados" value="Número de Peito" id="itemNumero">
-                        <label class="form-check-label" for="itemNumero">Número de Peito</label>
+                        <input type="checkbox" class="form-check-input" name="itensSelecionados" value="Camiseta" />
+                        <label class="form-check-label">Camiseta</label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="itensSelecionados" value="Água" id="itemAgua">
-                        <label class="form-check-label" for="itemAgua">Garrafa de Água / Hidratação</label>
+                        <input type="checkbox" class="form-check-input" name="itensSelecionados" value="Número de Peito" />
+                        <label class="form-check-label">Número de Peito</label>
                     </div>
 
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="itensSelecionados" value="Medalha" id="itemMedalha">
-                        <label class="form-check-label" for="itemMedalha">Medalha Finisher</label>
+                        <input type="checkbox" class="form-check-input" name="itensSelecionados" value="Água" />
+                        <label class="form-check-label">Hidratação</label>
                     </div>
 
-                    <div class="mt-2">
-                        <label class="small text-muted">Outros (Separe por vírgula):</label>
-                        <input type="text" name="itemOutros" class="form-control form-control-sm" placeholder="Ex: Boné, Chip de Cronometragem...">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="itensSelecionados" value="Medalha" />
+                        <label class="form-check-label">Medalha</label>
                     </div>
+
+                    <label class="mt-2 small text-muted">Outros itens (separar por vírgula):</label>
+                    <input type="text" name="itemOutros" class="form-control form-control-sm" placeholder="Ex: Boné, Chip..." />
                 </div>
 
                 <div class="d-flex justify-content-between mt-4">
                     <a asp-action="MeusKits" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-success px-4">Salvar Kit</button>
+                    <button class="btn btn-success px-4">Salvar Kit</button>
                 </div>
             </form>
         </div>

@@ -1,6 +1,6 @@
 ﻿@model CorridaUfla2.Models.Corrida
-@{ 
-    var kits = ViewBag.KitsDisponiveis as List<CorridaUfla2.Models.Kit>; 
+@{
+    var kits = ViewBag.KitsDisponiveis as List<CorridaUfla2.Models.Kit>;
     var pix = ViewBag.Pix;
 }
 
@@ -8,16 +8,19 @@
     <div class="row">
         <div class="col-md-7">
             <h1 class="text-primary">@Model.Nome</h1>
-            
-            @if(!string.IsNullOrEmpty(Model.CaminhoImagemMapa)) {
-                <img src="~/imagens/@Model.CaminhoImagemMapa" class="img-fluid rounded mb-3 shadow-sm" style="max-height: 300px; width: 100%; object-fit: cover;" />
+
+            @if (!string.IsNullOrEmpty(Model.CaminhoImagemMapa))
+            {
+                <img src="~/imagens/@Model.CaminhoImagemMapa"
+                     class="img-fluid rounded mb-3 shadow-sm"
+                     style="max-height:300px; object-fit:cover;" />
             }
-            
+
             <div class="alert alert-light border">
-                <h5>Sobre o Evento</h5>
+                <h5 class="fw-bold">Sobre o Evento</h5>
                 <p>@Model.Descricao</p>
                 <hr>
-                <strong>Data:</strong> @Model.DataInicio.ToShortDateString() - @Model.HorarioLargada <br>
+                <strong>Data:</strong> @Model.DataInicio.ToShortDateString() - @Model.HorarioLargada<br />
                 <strong>Local:</strong> @Model.Logradouro, @Model.Numero - @Model.Bairro, @Model.Cidade
             </div>
         </div>
@@ -28,14 +31,16 @@
                     <h4 class="mb-0">Inscrição</h4>
                 </div>
                 <div class="card-body">
+
                     <form asp-action="Inscrever" method="post">
                         <input type="hidden" name="corridaId" value="@Model.Id" />
 
                         <div class="mb-3">
                             <label class="fw-bold">1. Escolha o Kit:</label>
-                            <select name="kitId" id="selectKit" class="form-select" required onchange="atualizarInfos()">
-                                @foreach(var k in kits) {
-                                    <option value="@k.Id" 
+                            <select class="form-select" name="kitId" id="selectKit" required onchange="atualizarInfos()">
+                                @foreach (var k in kits)
+                                {
+                                    <option value="@k.Id"
                                             data-preco="@k.Preco"
                                             data-desc="@k.Descricao"
                                             data-itens="@k.ItensTexto"
@@ -48,35 +53,37 @@
 
                         <div class="alert alert-info p-2 mb-3">
                             <h6 class="fw-bold border-bottom pb-1">Itens Inclusos:</h6>
-                            <p class="mb-2 small" id="lblItens">...</p>
-                            
+                            <p id="lblItens" class="small mb-1">...</p>
+
                             <h6 class="fw-bold border-bottom pb-1">Descrição:</h6>
-                            <p class="mb-0 small" id="lblDesc">...</p>
+                            <p id="lblDesc" class="small mb-0">...</p>
                         </div>
 
-                        <div class="mb-3" id="divCamisa" style="display:none;">
+                        <div id="divCamisa" style="display:none;" class="mb-3">
                             <label class="fw-bold text-danger">2. Tamanho da Camisa:</label>
-                            <select name="tamanho" class="form-select">
-                                <option value="P">P</option>
-                                <option value="M">M</option>
-                                <option value="G">G</option>
-                                <option value="GG">GG</option>
+                            <select class="form-select" name="tamanho">
+                                <option>P</option>
+                                <option>M</option>
+                                <option>G</option>
+                                <option>GG</option>
                             </select>
                         </div>
+
                         <input type="hidden" name="tamanho" value="NaoAplica" id="hiddenCamisa" disabled />
 
                         <div id="divPix" class="alert alert-warning text-center" style="display:none;">
-                            <strong>Pagamento PIX:</strong> <br>
+                            <strong>Pagamento PIX:</strong><br />
                             <span class="badge bg-dark fs-5">@pix</span>
                         </div>
 
                         <div class="form-check mb-3">
                             <input type="checkbox" class="form-check-input" required />
-                            <label>Li e aceito os termos.</label>
+                            <label class="form-check-label">Li e aceito os termos.</label>
                         </div>
 
                         <button class="btn btn-success w-100 btn-lg">Confirmar Inscrição</button>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -85,33 +92,18 @@
 
 <script>
     function atualizarInfos() {
-        var select = document.getElementById("selectKit");
-        var opt = select.options[select.selectedIndex];
-        
-        // Pega dados
-        var desc = opt.getAttribute("data-desc");
-        var itens = opt.getAttribute("data-itens");
-        var preco = parseFloat(opt.getAttribute("data-preco"));
-        var temCamisa = opt.getAttribute("data-camisa") === "true";
+        const opt = document.getElementById("selectKit").selectedOptions[0];
 
-        // Atualiza Texto
-        document.getElementById("lblDesc").innerText = desc || "Sem descrição";
-        document.getElementById("lblItens").innerText = itens || "Nenhum item.";
+        document.getElementById("lblDesc").innerText = opt.dataset.desc || "Sem descrição.";
+        document.getElementById("lblItens").innerText = opt.dataset.itens || "Nenhum item.";
 
-        // Camisa
-        var divCamisa = document.getElementById("divCamisa");
-        var hiddenCamisa = document.getElementById("hiddenCamisa");
-        
-        if(temCamisa) {
-            divCamisa.style.display = "block";
-            hiddenCamisa.disabled = true;
-        } else {
-            divCamisa.style.display = "none";
-            hiddenCamisa.disabled = false;
-        }
+        const preco = parseFloat(opt.dataset.preco);
+        const temCamisa = opt.dataset.camisa === "true";
 
-        // PIX
-        document.getElementById("divPix").style.display = (preco > 0) ? "block" : "none";
+        document.getElementById("divCamisa").style.display = temCamisa ? "block" : "none";
+        document.getElementById("hiddenCamisa").disabled = temCamisa;
+
+        document.getElementById("divPix").style.display = preco > 0 ? "block" : "none";
     }
 
     window.onload = atualizarInfos;

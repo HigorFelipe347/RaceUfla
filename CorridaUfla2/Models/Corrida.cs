@@ -6,10 +6,12 @@ namespace CorridaUfla2.Models
     public class Corrida
     {
         public int Id { get; set; }
+
         [Required] public string Nome { get; set; }
+
         public string Descricao { get; set; }
 
-        // Novos campos solicitados
+        // Endereço
         public string Logradouro { get; set; }
         public string Numero { get; set; }
         public string Bairro { get; set; }
@@ -19,17 +21,21 @@ namespace CorridaUfla2.Models
         public double DistanciaKm { get; set; }
         public int MaximoParticipantes { get; set; }
 
-        [DataType(DataType.Date)] public DateTime DataInicio { get; set; }
-        [DataType(DataType.Time)] public TimeSpan HorarioLargada { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime DataInicio { get; set; }
+
+        [DataType(DataType.Time)]
+        public TimeSpan HorarioLargada { get; set; }
 
         public string CaminhoImagemMapa { get; set; }
 
+        // Upload sem mapear no BD
         [NotMapped]
         public IFormFile ArquivoImagem { get; set; }
 
         public int OrganizadorId { get; set; }
 
-        // Inicialização para evitar erro de nulo
+        // Kits escolhidos
         public List<int> KitsSelecionados { get; set; } = new();
     }
 }

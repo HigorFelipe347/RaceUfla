@@ -3,7 +3,6 @@
     var inscricoes = ViewBag.Inscricoes as List<CorridaUfla2.Models.Inscricao>;
     var corredores = ViewBag.TodosCorredores as List<CorridaUfla2.Models.Corredor>;
 }
-
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Gerenciar Participantes</h2>
@@ -11,25 +10,20 @@
     </div>
 
     <div class="card mb-4 shadow-sm border-primary">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">@Model.Nome</h4>
-        </div>
+        <div class="card-header bg-primary text-white"><h4>@Model.Nome</h4></div>
         <div class="card-body">
+
             <div class="row">
-                <div class="col-md-4">
-                    <strong>Data:</strong> @Model.DataInicio.ToShortDateString() - @Model.HorarioLargada
-                </div>
-                <div class="col-md-4">
-                    <strong>Local:</strong> @Model.Cidade - @Model.UF
-                </div>
-                <div class="col-md-4">
-                    <strong>Endereço:</strong> @Model.Logradouro, @Model.Numero - @Model.Bairro
-                </div>
+                <div class="col-md-4"><strong>Data:</strong> @Model.DataInicio.ToShortDateString() - @Model.HorarioLargada</div>
+                <div class="col-md-4"><strong>Local:</strong> @Model.Cidade - @Model.UF</div>
+                <div class="col-md-4"><strong>Endereço:</strong> @Model.Logradouro, @Model.Numero - @Model.Bairro</div>
+
                 <div class="col-md-12 mt-3">
-                    <strong>Descrição:</strong> <br>
+                    <strong>Descrição:</strong><br />
                     @Model.Descricao
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -37,76 +31,88 @@
 
     @if (!inscricoes.Any())
     {
-        <div class="alert alert-info">Ainda não há inscritos nesta corrida.</div>
+        <div class="alert alert-info">Nenhum inscrito ainda.</div>
     }
     else
     {
-        <table class="table table-bordered table-striped bg-white align-middle">
+        <table class="table table-bordered table-striped bg-white">
             <thead class="table-dark">
                 <tr>
-                    <th>Nome do Corredor</th>
-                    <th>Email / Contato</th>
-                    <th>Kit / Camisa</th>
-                    <th>Financeiro</th>
-                    <th style="width: 200px;">Ações do Organizador</th>
+                    <th>Corredor</th>
+                    <th>Contato</th>
+                    <th>Kit</th>
+                    <th>Pag.</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var inscricao in inscricoes)
+
+                @foreach (var i in inscricoes)
                 {
-                    // Busca os dados pessoais do corredor
-                    var dadosPessoais = corredores.FirstOrDefault(c => c.Id == inscricao.CorredorId);
+                    var c = corredores.FirstOrDefault(x => x.Id == i.CorredorId);
 
                     <tr>
                         <td>
-                            <strong>@(dadosPessoais != null ? dadosPessoais.Nome : "Usuário Excluído")</strong> <br />
-                            <small class="text-muted">CPF: @(dadosPessoais != null ? dadosPessoais.CPF : "--")</small>
+                            <strong>@(c?.Nome ?? "Usuário excluído")</strong><br />
+                            <small>CPF: @(c?.CPF ?? "--")</small>
                         </td>
+
                         <td>
-                            @(dadosPessoais != null ? dadosPessoais.Email : "--") <br />
-                            <small>@(dadosPessoais != null ? dadosPessoais.Telefone : "")</small>
+                            @c?.Email <br />
+                            <small>@c?.Telefone</small>
                         </td>
+
                         <td>
-                            @inscricao.NomeKit <br />
-                            <small class="fw-bold">Camisa: @inscricao.TamanhoCamisa</small>
+                            @i.NomeKit <br />
+                            <small>Camisa: @i.TamanhoCamisa</small>
                         </td>
+
                         <td>
-                            @if (inscricao.ValorPago == 0)
+                            @if (i.ValorPago == 0)
                             {
-                                <span class="badge bg-success">Gratuito</span>
+                                <span class="badge bg-success">GRATUITO</span>
                             }
                             else
                             {
-                                <div class="fw-bold">R$ @inscricao.ValorPago</div>
-                                @if (inscricao.Status.Contains("Confirmado"))
+                                <strong>R$ @i.ValorPago</strong>
+                    
+                                <br />
+                                @if (i.Status.Contains("Confirmado"))
                                 {
-                                    <span class="badge bg-success">PAGO / CONFIRMADO</span>
+                                    <span class="badge bg-success">CONFIRMADO</span>
                                 }
                                 else
                                 {
-                                    <span class="badge bg-warning text-dark">PENDENTE (PIX)</span>
+                                    <span class="badge bg-warning">PENDENTE</span>
                                 }
                             }
                         </td>
 
                         <td>
                             <div class="d-flex gap-2">
-                                @if (inscricao.ValorPago > 0 && !inscricao.Status.Contains("Confirmado"))
+
+                                @if (i.ValorPago > 0 && !i.Status.Contains("Confirmado"))
                                 {
                                     <form asp-action="ConfirmarPagamento" method="post">
-                                        <input type="hidden" name="idInscricao" value="@inscricao.Id" />
-                                        <button class="btn btn-sm btn-success" title="Confirmar Recebimento do PIX">✔ Confirmar</button>
+                                        <input type="hidden" name="idInscricao" value="@i.Id" />
+                                        <button class="btn btn-sm btn-success">Confirmar</button>
                                     </form>
                                 }
 
-                                <form asp-action="NegarInscricao" method="post" onsubmit="return confirm('Tem certeza que deseja NEGAR/EXCLUIR esta inscrição? O corredor será removido da lista.');">
-                                    <input type="hidden" name="idInscricao" value="@inscricao.Id" />
-                                    <button class="btn btn-sm btn-danger" title="Remover Corredor">✖ Negar</button>
+                                <form asp-action="NegarInscricao" method="post">
+                                    <input type="hidden" name="idInscricao" value="@i.Id" />
+                                    <button class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Tem certeza que deseja excluir?');">
+                                        Excluir
+                                    </button>
                                 </form>
+
                             </div>
                         </td>
+
                     </tr>
                 }
+
             </tbody>
         </table>
     }

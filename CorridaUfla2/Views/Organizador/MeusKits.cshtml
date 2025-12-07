@@ -1,14 +1,14 @@
 ﻿@model List<CorridaUfla2.Models.Kit>
 
 <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-between mb-3">
         <h2>Meus Kits</h2>
         <a asp-action="CriarKit" class="btn btn-success">+ Novo Kit</a>
     </div>
 
     @if (!Model.Any())
     {
-        <div class="alert alert-warning">Você ainda não criou nenhum kit.</div>
+        <div class="alert alert-warning">Nenhum kit criado ainda.</div>
     }
     else
     {
@@ -22,15 +22,18 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var kit in Model)
+                @foreach (var k in Model)
                 {
                     <tr>
-                        <td>@kit.Nome</td>
-                        <td>R$ @kit.Preco</td>
-                        <td>@kit.ItensTexto</td>
+                        <td>@k.Nome</td>
+                        <td>R$ @k.Preco</td>
+                        <td>@k.ItensTexto</td>
                         <td>
-                            <a asp-action="EditarKit" asp-route-id="@kit.Id" class="btn btn-sm btn-primary">Editar</a>
-                            <a asp-action="ExcluirKit" asp-route-id="@kit.Id" class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza?')">Apagar</a>
+                            <a asp-action="EditarKit" asp-route-id="@k.Id" class="btn btn-sm btn-primary">Editar</a>
+                            <a asp-action="ExcluirKit" asp-route-id="@k.Id" class="btn btn-sm btn-danger"
+                               onclick="return confirm('Apagar kit?');">
+                                Apagar
+                            </a>
                         </td>
                     </tr>
                 }

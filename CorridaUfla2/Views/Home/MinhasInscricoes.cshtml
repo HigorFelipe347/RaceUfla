@@ -5,7 +5,10 @@
 
     @if (!Model.Any())
     {
-        <div class="alert alert-warning">Você ainda não se inscreveu em nenhuma corrida. <a asp-action="Index">Ver corridas</a>.</div>
+        <div class="alert alert-warning">
+            Você ainda não se inscreveu em nenhuma corrida.
+            <a asp-action="Index">Ver corridas</a>.
+        </div>
     }
     else
     {
@@ -13,18 +16,19 @@
             <thead class="bg-dark text-white">
                 <tr>
                     <th>Corrida</th>
-                    <th>Kit Escolhido</th>
+                    <th>Kit</th>
                     <th>Valor</th>
                     <th>Status</th>
                     <th>Ações</th>
                 </tr>
             </thead>
+
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
                         <td class="fw-bold">@item.NomeCorrida</td>
-                        <td>@item.NomeKit <br /> <small class="text-muted">Camisa: @item.TamanhoCamisa</small></td>
+                        <td>@item.NomeKit <br /><small class="text-muted">Camisa: @item.TamanhoCamisa</small></td>
                         <td>@(item.ValorPago == 0 ? "Grátis" : "R$ " + item.ValorPago.ToString("F2"))</td>
                         <td>
                             <span class="badge @(item.Status.Contains("Confirmado") ? "bg-success" : "bg-warning text-dark")">
@@ -34,7 +38,7 @@
                         <td>
                             <form asp-action="CancelarInscricao" method="post" onsubmit="return confirm('Tem certeza que deseja cancelar?');">
                                 <input type="hidden" name="id" value="@item.Id" />
-                                <button type="submit" class="btn btn-sm btn-danger">Cancelar</button>
+                                <button class="btn btn-danger btn-sm">Cancelar</button>
                             </form>
                         </td>
                     </tr>
