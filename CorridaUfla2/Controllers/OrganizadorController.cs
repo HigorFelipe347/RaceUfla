@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using CorridaUfla2.Data;
 using CorridaUfla2.Models;
 
